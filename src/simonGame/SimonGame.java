@@ -54,7 +54,7 @@ public class SimonGame {
 
         addColoursToArray(colourArray);
 
-        //}
+        ///}
 
     }
 
