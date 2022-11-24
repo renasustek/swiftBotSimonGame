@@ -47,7 +47,7 @@ public class SimonGame {
 
     private static void play() throws InterruptedException, IOException {
         System.out.println("playyyy timmmmee");
-        int counter = 2;
+        int counter = 6;
         int lives = 3;
         //while (lives!=0){
         int[] colourArray = new int[counter];
@@ -91,9 +91,10 @@ public class SimonGame {
             for (int i = 0; i < colourArray.length; i++) {
                 int randomNum = (int) (Math.random() * 4);
                 colourArray[i] = randomNum;
-                displayingColoursInArray(colourArray);
-            }
+                System.out.println(randomNum);
 
+            }
+            displayingColoursInArray(colourArray);
         }
     }
 
