@@ -10,14 +10,14 @@ import com.pi4j.util.Console;
 
 import swiftbot.SwiftBotAPI;
 
+import static swiftbot.SwiftBotAPI.Underlight.*;
+
 public class SimonGame {
 
 
     static SwiftBotAPI swiftBot;
 
     public static void main(String[] args) {
-
-
         swiftBot = new SwiftBotAPI();
         swiftBot.fillButtonLights();
         final Console console = new Console();
@@ -182,14 +182,13 @@ public class SimonGame {
             System.out.println("displayingColoursInArray");
             for (int j : colourArray) {
                 if (j == 0) {
-                    displayColourSimplifiyer(255, 0, 0, "FL", 1000);
+                    displayColourSimplifiyer(255, 0, 0, FRONT_LEFT, 1000);
                 } else if (j == 1) {
-                    displayColourSimplifiyer(0, 255, 0, "FR", 1000);
+                    displayColourSimplifiyer(0, 255, 0, FRONT_RIGHT, 1000);
                 } else if (j == 2) {
-                    displayColourSimplifiyer(0, 0, 255, "BL", 1000);
+                    displayColourSimplifiyer(0, 0, 255, BACK_LEFT, 1000);
                 } else if (j == 3) {
-                    displayColourSimplifiyer(255, 255, 0, "BR", 1000);
-
+                    displayColourSimplifiyer(255, 255, 0, BACK_RIGHT, 1000);
                 }
             }
         }
@@ -206,44 +205,18 @@ public class SimonGame {
             displayingColoursInArray(colourArray);
         }
 
-        public static void displayColourSimplifiyer ( int r, int g, int b, String WhichLight,int time) throws
+        public static void displayColourSimplifiyer (int r, int g, int b, SwiftBotAPI.Underlight whichLight, int time) throws
         IOException, InterruptedException {
-            if (Objects.equals(WhichLight, "FL")) {
-                swiftBot.setUnderlight(SwiftBotAPI.Underlight.FRONT_LEFT, r, g, b);
+
+                swiftBot.setUnderlight(whichLight, r, g, b);
                 Thread.sleep(time);
-                swiftBot.disableUnderlight(SwiftBotAPI.Underlight.FRONT_LEFT, false);
+                swiftBot.disableUnderlight(whichLight, false);
                 swiftBot.updateUnderlights();
-            } else if (Objects.equals(WhichLight, "FR")) {
-                swiftBot.setUnderlight(SwiftBotAPI.Underlight.FRONT_RIGHT, r, g, b);
-                Thread.sleep(time);
-                swiftBot.disableUnderlight(SwiftBotAPI.Underlight.FRONT_RIGHT, false);
-                swiftBot.updateUnderlights();
-            } else if (Objects.equals(WhichLight, "ML")) {
-                swiftBot.setUnderlight(SwiftBotAPI.Underlight.MIDDLE_LEFT, r, g, b);
-                Thread.sleep(time);
-                swiftBot.disableUnderlight(SwiftBotAPI.Underlight.MIDDLE_LEFT, false);
-                swiftBot.updateUnderlights();
-            } else if (Objects.equals(WhichLight, "MR")) {
-                swiftBot.setUnderlight(SwiftBotAPI.Underlight.MIDDLE_RIGHT, r, g, b);
-                Thread.sleep(time);
-                swiftBot.disableUnderlight(SwiftBotAPI.Underlight.MIDDLE_RIGHT, false);
-                swiftBot.updateUnderlights();
-            } else if (Objects.equals(WhichLight, "BL")) {
-                swiftBot.setUnderlight(SwiftBotAPI.Underlight.BACK_LEFT, r, g, b);
-                Thread.sleep(time);
-                swiftBot.disableUnderlight(SwiftBotAPI.Underlight.BACK_LEFT, false);
-                swiftBot.updateUnderlights();
-            } else if (WhichLight == "BR") {
-                swiftBot.setUnderlight(SwiftBotAPI.Underlight.BACK_RIGHT, r, g, b);
-                Thread.sleep(time);
-                swiftBot.disableUnderlight(SwiftBotAPI.Underlight.BACK_RIGHT, false);
-                swiftBot.updateUnderlights();
-            } else {
-                System.out.println("Invalid options");
+            }
             }
 
-        }
-    }
+
+
 
 
 
