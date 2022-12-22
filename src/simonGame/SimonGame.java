@@ -12,17 +12,15 @@ import swiftbot.SwiftBotAPI;
 import static swiftbot.SwiftBotAPI.Underlight.*;
 
 public class SimonGame {
-    int lives = 3;
+    private static int lives = 3;
 
-    private static final Map<SwiftBotAPI.Underlight, int[]> lights = Map.of(
-            FRONT_LEFT, new int[]{255, 0, 0}
-    );
     static SwiftBotAPI swiftBot;
 
     public static void main(String[] args) {
         swiftBot = new SwiftBotAPI();
         swiftBot.fillButtonLights();
         userInputTerminal();
+
     }
 
     private static void userInputTerminal() {
@@ -54,78 +52,76 @@ public class SimonGame {
 
 
     private static void play() throws InterruptedException, IOException {
-        System.out.println("playyyy timmmmee");
+        System.out.println("playyyy timmmmee MISTER");
         int counter = 2;
 
         //while (lives!=0){
-        int[] colourArray = new int[counter];
+        List<Integer> colourArray = new ArrayList<>();
 
         addColoursToArray(colourArray); //TODO move to initialise
-
-        boolean result = userInputAndCheck(colourArray);
-        System.out.println(result);
+        userButtonInput(colourArray);
     }
 
-    private static boolean userInputAndCheck(int[] colourArray) {
+
+    private static void inputCheck(int buttonPressed, List<Integer> colourArray) {
+        boolean wrongInput = false;
+        if (colourArray.size() > 0) {
+            if (buttonPressed == colourArray.get(0)) {
+                colourArray.remove(0);
+            } else {
+                wrongInput = true;
+                lives -=1;
+
+            }
+        } else if (colourArray.size() == 1) {
+            System.out.println("you won");
+        }
+        returnTrueWrongInput(wrongInput);
+
+    }
+
+
+    private static boolean returnTrueWrongInput(boolean wrongInput) {
+        return wrongInput;
+    }
+
+    private static void userButtonInput(List<Integer> colourArray) {
+
         System.out.println("user input and check");
-        final boolean[] buttonPressed = new boolean[4];
+
         swiftBot.BUTTON_A.addListener((GpioPinListenerDigital) event -> {
             if (event.getState().isLow()) {
-                buttonPressed[0] = true;
                 System.out.println("red");
+                inputCheck(0, colourArray);
             }
         });
         swiftBot.BUTTON_X.addListener(new GpioPinListenerDigital() {
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
                 if (event.getState().isLow()) {
-                    buttonPressed[1] = true;
                     System.out.println("green");
+                    inputCheck(1, colourArray);
                 }
             }
         });
         swiftBot.BUTTON_B.addListener(new GpioPinListenerDigital() {
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
                 if (event.getState().isLow()) {
-                    buttonPressed[2] = true;
                     System.out.println("Blue");
+                    inputCheck(2, colourArray);
                 }
             }
         });
         swiftBot.BUTTON_Y.addListener(new GpioPinListenerDigital() {
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
                 if (event.getState().isLow()) {
-                    buttonPressed[3] = true;
                     System.out.println("Yellow");
+                    inputCheck(3, colourArray);
                 }
             }
         });
-
-
-
-
-        boolean wrongInput = false;
-
-        for (int x : colourArray) {
-            System.out.println("NEWLINECOLOURARRAY");
-            if (buttonPressed[0] == true && x != 0) {
-                wrongInput = true;
-                break;
-            } else if (buttonPressed[1] == true && x != 1) {
-                wrongInput = true;
-                break;
-            } else if (buttonPressed[2] == true && x != 2) {
-                wrongInput = true;
-                break;
-            } else if (buttonPressed[3] == true && x != 3) {
-                wrongInput = true;
-                break;
-            }
-
-        }
-        return wrongInput;
     }
 
-    private static void displayingColoursInArray(int[] colourArray) throws IOException, InterruptedException {
+    private static void displayingColoursInArray(List<Integer> colourArray) throws IOException, InterruptedException {
         System.out.println("displayingColoursInArray");
         for (int j : colourArray) {
             if (j == 0) {
@@ -140,12 +136,13 @@ public class SimonGame {
         }
     }
 
-
-    private static void addColoursToArray(int[] colourArray) throws IOException, InterruptedException {
+    List<Integer> colourArray
+    private static void addColoursToArray() throws IOException, InterruptedException {
+        int[] colourArray = Arr
         System.out.println("addColoursToArray");
-        for (int i = 0; i < colourArray.length; i++) {
+        for (int i = 0; i < 3; i++) {
             int randomNum = (int) (Math.random() * 4);
-            colourArray[i] = randomNum;
+            colourArray.set(i, randomNum);
             System.out.println(randomNum);
         }
         displayingColoursInArray(colourArray);
@@ -159,7 +156,6 @@ public class SimonGame {
         swiftBot.updateUnderlights();
     }
 }
-
 
 
 
